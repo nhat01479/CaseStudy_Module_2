@@ -1,0 +1,35 @@
+
+Ràng buộc các điều kiện khi nhập liệu
+Regex và Design Pattern
+
+Xử lý Desk??
+Có 10 bàn cố định ở 1 flie với: id, name
+Đọc file lấy ra list bàn: desks
+Khi input id bàn:
+    đọc file: Nếu order.getEstatus = PAID thì lấy list orders đã thanh toán: orders
+    lấy ra list bàn: desks
+Tạo 1 list chứa danh sách bàn đang trống: listEmptyDesk
+
+
+for (Order order: oders){
+    for (Desk desk: desks){
+        if (order.getIdDesk == desk.getId){
+        listEmptyDesk.add(desk)
+        }
+    }
+}
+return listEmptyDesk;
+check = true;
+do {
+    Nhập Id bàn
+    id = sc.nextLine()
+    for (Desk d: listEmptyDesk){
+        if (id == d.getId){
+            check = false
+            break;
+        }
+    }
+} while (check);
+
+Refactor và sắp xếp lại các phương thức
+
