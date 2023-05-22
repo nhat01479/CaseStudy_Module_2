@@ -21,7 +21,7 @@ public class FoodView {
         boolean checkAction = false;
         do {
             System.out.println("                               ╔══════════════════════════════════════════════╗");
-            System.out.println("                               ║                  Menu Food                   ║");
+            System.out.println("                               ║               Quản lý thực đơn               ║");
             System.out.println("                               ╠══════════════════════════════════════════════╣");
             System.out.println("                               ║             1. Xem thực đơn                  ║");
             System.out.println("                               ║             2. Thêm món ăn                   ║");

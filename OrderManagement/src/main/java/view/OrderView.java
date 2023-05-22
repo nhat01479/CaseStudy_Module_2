@@ -20,7 +20,7 @@ public class OrderView {
     private FoodService foodService;
     private UserService userService;
     public OrderView() {
-//        orderItemService = new OrderItemService();
+        orderItemService = new OrderItemService();
         oderService = new OrderService();
         foodService = new FoodService();
         userService = new UserService();
@@ -50,15 +50,19 @@ public class OrderView {
                         FoodView.showListFood(foodService.findAllFood());
                         break;
                     case 2:
-                        showOrders(oderService.findAllOrder());
+                      showOrders(oderService.findAllOrder());
                         break;
                     case 3:
                         showOrderDetail();
                         break;
                     case 4:
+                        FoodView.showListFood(foodService.findAllFood());
+                        System.out.println("Tạo order");
                         showOrderDetail(oderService.createOrder());
                         break;
                     case 5:
+                        System.out.println("Danh sách hoá đơn chưa thanh toán: ");
+                        showOrders(oderService.getNotPaidOrderList());
                         oderService.removeOrder();
                         break;
                     case 6:
@@ -119,6 +123,8 @@ public class OrderView {
         Order order = findOrderById();
         if (order == null) System.out.println("Không tìm thấy hoá đơn");
         if (order != null) {
+            showOrderDetail(order);
+
             boolean check = isPaid(order);
             if (check) {
                 System.out.println("Hoá đơn đã thanh toán, không thể chỉnh sửa");
@@ -158,11 +164,18 @@ public class OrderView {
                         }
                     } while (choice < 0 || choice > 3);
                 } while (checkContinue);
+                System.out.println("Order sau khi sửa: ");
+                showOrderDetail(order);
+
             }
         }
     }
     private void editOrderItemMenu(Order order){
-
+        List<OrderItem> odItems = orderItemService.findAllOrderItemsByOrderId(order.getIdOrder());
+        System.out.println("Danh sách các orderItem: ");
+        for (OrderItem orderItem: odItems){
+            System.out.println("idOrderItem: " + orderItem.getIdOrderItem() + " - Tên món: " + foodService.findFoodById(orderItem.getIdFood()).getNameFood() + " - Số lượng: " + orderItem.getQuantity() + " - Giá: " + orderItem.getPrice());
+        }
         System.out.println("Nhập IdOrderItem");
         long idOrderItem = Long.parseLong(ValidateUtils.inputId());
         OrderItem orderItem = orderItemService.findOrderItemById(order, idOrderItem);
@@ -181,8 +194,8 @@ public class OrderView {
                     switch (choice){
                         case 1:
                             oderService.inputQuantity(idOrderItem, orderItem);
-//                            order.updateTotal();
-//                            oderService.updateOrder(order);
+                            order.updateTotal();
+                            oderService.updateOrder(order);
                             break;
                         case 2:
                             List<OrderItem> orderItems = orderItemService.removeOrderItem(orderItem);
@@ -226,9 +239,10 @@ public class OrderView {
         boolean check;
         do {
             check = false;
-            System.out.println("1. Đã thanh toán\n2. Chưa thanh toán");
+
             int choice = -1;
             do {
+                System.out.println("1. Đã thanh toán\n2. Chưa thanh toán");
                 choice = Integer.parseInt(ValidateUtils.inputChoice());
                 switch (choice){
                     case 1:
@@ -239,7 +253,7 @@ public class OrderView {
                         break;
                     default:
                         System.out.println("Nhập không đúng, vui lòng nhập lại");
-                        check = true;
+//                        check = true;
                 }
             } while (choice < 1 || choice > 2);
         }while (check);

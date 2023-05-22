@@ -1,13 +1,16 @@
-13,Coca Cola,10000.0,DRINKS
 12,Dasani,8000.0,DRINKS
+13,Coca Cola,10000.0,DRINKS
 16110,Nước lọc,10000.0,DRINKS
 14,HUDA,11000.0,DRINKS
 61202,Bia Sài Gòn,15000.0,DRINKS
+20428,Redbull,15000.0,DRINKS
 90072,Chè bột lọc,20000.0,FOOD
 10,Rau muống xào tỏi,35000.0,FOOD
 11,Khoai tây chiên,50000.0,FOOD
+46145,Bò xào lá lốt,70000.0,FOOD
 37706,Bún đậu,90000.0,FOOD
 7,Ếch xào xả,90000.0,FOOD
+19412,Càng cúm rang muối,90000.0,FOOD
 9,Cơm chiên,100000.0,FOOD
 66079,Ếch rang lá chanh,100000.0,FOOD
 3,Tôm nướng,100000.0,FOOD
@@ -15,6 +18,3 @@
 5,Lẩu gà,200000.0,FOOD
 30621,Gà nướng,250000.0,FOOD
 6,Diềm nướng,800000.0,FOOD
-46145,Bò xào lá lốt,70000.0,FOOD
-20428,Redbull,15000.0,DRINKS
-19412,Càng cúm rang muối,80000.0,FOOD

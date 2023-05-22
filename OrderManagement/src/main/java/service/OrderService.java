@@ -1,6 +1,8 @@
 package service;
 
+import com.sun.security.jgss.GSSUtil;
 import model.*;
+import utils.AppUtils;
 import utils.ValidateUtils;
 import utils.DateUtils;
 import utils.FileUtils;
@@ -74,24 +76,33 @@ public class OrderService {
     }
 
     public void removeOrder() {
+
         System.out.println("Xoá order");
         System.out.println("Nhập ID order");
         long idOrder = Long.parseLong(ValidateUtils.inputId());
         List<Order> orders = findAllOrder();
-        List<OrderItem> orderItems = orderItemService.findAllOrderItems();
-        for (Order order : orders) {
-            if (idOrder == order.getIdOrder()) {
-                if (order.geteStatus() == EStatus.UNPAID) {
-                    List<OrderItem> result = orderItemService.removeOrderItemByIdOrder(orderItems, idOrder);
-                    FileUtils.writeToFile(orderItemService.getPath(), result);
-                    orders.remove(order);
-                    break;
-                } else {
-                    System.out.println("Hoá đơn đã thanh toán, không thể xoá");
+
+        Order od = findOrder(idOrder);
+        if (od == null) {
+            System.out.println("Không tìm thấy order");
+        } else {
+            System.out.println("Thông tin order cần xoá: ");
+            showOrderDetail(od);
+            List<OrderItem> orderItems = orderItemService.findAllOrderItems();
+            for (Order order : orders) {
+                if (idOrder == order.getIdOrder()) {
+                    if (order.geteStatus() == EStatus.UNPAID) {
+                        List<OrderItem> result = orderItemService.removeOrderItemByIdOrder(orderItems, idOrder);
+                        FileUtils.writeToFile(orderItemService.getPath(), result);
+                        orders.remove(order);
+                        break;
+                    } else {
+                        System.out.println("Hoá đơn đã thanh toán, không thể xoá");
+                    }
                 }
             }
         }
-        System.out.println("Không tìm thấy order");
+
 
         FileUtils.writeToFile(ORDER_PATH, orders);
     }
@@ -330,6 +341,20 @@ public class OrderService {
             }
         } while (choice < 1 || choice > 2);
         return eStatus;
+    }
+    private void showOrderDetail(Order order){
+        System.out.printf("%-25s - %-20s\n", "Mã hoá đơn: " + order.getIdOrder(), "Mã số bàn: " + order.getIdDesk());
+        System.out.printf("%-25s - %-20s\n", "Mã nhân viên: " + order.getIdStaff(), "Tên nhân viên: " + userService.findUserById(order.getIdStaff()).getFullName());
+
+        System.out.printf("%-25s%-10s%-15s%-15s\n","Tên món", "Số lượng", "Đơn giá","Thành tiền");
+        System.out.println("-----------------------------------------------------------");
+
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Food f = foodService.findFoodById(orderItem.getIdFood());
+            System.out.printf("%-25s%-10s%-15s%-15s\n", f.getNameFood(), orderItem.getQuantity(), orderItem.getPrice(),  AppUtils.currencyFormat(orderItem.getQuantity()*orderItem.getPrice()));
+        }
+        System.out.println("-----------------------------------------------------------");
+        System.out.printf("%-50s%-15s\n", "Tổng tiền: ", AppUtils.currencyFormat(order.getTotal()));
     }
 
     private boolean checkFoodExistOrder(Order order, Food food) {

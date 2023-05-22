@@ -59,7 +59,7 @@ public class UserView {
                         System.out.println("Lựa chọn không đúng, vui lòng nhập lại");
                 }
             } while (choice < 0 || choice > 5);
-            checkAction = AppUtils.checkExit();
+            checkAction = AppUtils.checkContinue();
 //            System.out.println("Nhập 'Y' để tiếp tục hoặc 'N' để trở lại");
 //            String choiceContinue = "";
 //            do {
